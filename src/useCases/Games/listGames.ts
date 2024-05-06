@@ -7,7 +7,7 @@ export const listGames = async ( req:Request, res:Response ) => {
 
 
   
-  const queryString =  `SELECT title, price, publisherName as publisher, ESRB_ratingName as ESRB 
+  const queryString =  `SELECT id, title, price, publisherName as publisher, ESRB_ratingName as ESRB 
                         FROM games;`;
   
   try {

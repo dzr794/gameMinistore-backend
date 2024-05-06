@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { db } from "../../config/mySqlConnection";
-import { Games } from '../../entities/Games';
+import { Games } from '../../entities';
 
 export const readGame = async (req:Request, res:Response) => {
 

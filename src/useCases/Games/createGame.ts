@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { db } from "../../config/mySqlConnection";
-import { Games } from "../../entities/Games";
+import { Games } from "../../entities";
 
 
 export const createGame = async(req:Request, res:Response) => {
@@ -11,12 +11,12 @@ export const createGame = async(req:Request, res:Response) => {
   
   try {
     const [queryResult] = await conn.query(`INSERT INTO games 
-                                            (id, title, price, 
+                                            (title, price, 
                                              publisherId, publisherName,
                                              ESRB_ratingId, ESRB_ratingName
                                             ) 
                                             VALUES 
-                                            (NULL, '${newGame.title}', ${newGame.price} , 
+                                            ('${newGame.title}', ${newGame.price} , 
                                              ${newGame.publisherId}, '${newGame.publisherName}', 
                                              ${newGame.ESRB_ratingId}, '${newGame.ESRB_ratingName}'
                                             );`
