@@ -12,7 +12,8 @@ CREATE TABLE Games (
     publisherId int NOT NULL,
     publisherName varchar(255) NOT NULL,
     ESRB_ratingId int NOT NULL,
-    ESRB_ratingName varchar(255) NOT NULL
+    ESRB_ratingName varchar(255) NOT NULL,
+    imgLink varchar(1000)
 );
 
 CREATE INDEX gamePrice_idx
@@ -32,9 +33,14 @@ CREATE TABLE Publishers (
 CREATE TABLE Users (
 	id int PRIMARY KEY AUTO_INCREMENT,
 	displayName varchar(255) NOT NULL,
-	email varchar(255),
+	email varchar(255) NOT NULL,
 	password varchar(255) NOT NULL,
     userSince datetime DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Roles (
+	id int PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255) NOT NULL
 );
 
 CREATE TABLE Orders (
@@ -54,6 +60,12 @@ CREATE TABLE Game_User_relations (
     userId int NOT NULL,
     gameId int NOT NULL,
     PRIMARY KEY (userId, gameId)
+);
+
+CREATE TABLE User_Role_relations (
+	userId int NOT NULL,
+    roleId int NOT NULL DEFAULT 1,
+    PRIMARY KEY (userId)
 );
 
 ALTER TABLE Games
@@ -98,13 +110,21 @@ ADD CONSTRAINT fk_GU_User
     REFERENCES Users (id)
     ON DELETE CASCADE;
 
-#CREATE VIEW GamesWithInfo AS
-#SELECT Games.id, title, price,
-#p.name AS publisher, ESRB.name as 'ESRB_rating' FROM Games
-#INNER JOIN Publishers as p
-#ON Games.publisherId = p.id
-#INNER JOIN ESRB
-#ON Games.ESRB_ratingId = ESRB.id;
+ALTER TABLE User_Role_relations
+ADD CONSTRAINT fk_UR_User
+    FOREIGN KEY (userId)
+    REFERENCES Users (id)
+    ON DELETE CASCADE;
+
+ALTER TABLE User_Role_relations
+ADD CONSTRAINT fk_UR_Role
+    FOREIGN KEY (roleId)
+    REFERENCES Roles (id)
+    ON DELETE CASCADE;
+
+
+# user with role name view
+CREATE VIEW user_with_role as SELECT u.id as userId, u.displayName as userName, r.id as roleId, r.name as roleName FROM User_Role_relations as URr INNER JOIN Users as u on u.id = URr.userId INNER JOIN Roles as r on r.id = URr.roleId;
 
     
 # Data insertion
@@ -119,12 +139,16 @@ INSERT INTO ESRB (id, name, description) VALUES
 (NULL, "Rating Pending — Likely Mature 17+", "Not yet assigned a final ESRB rating but anticipated to be rated Mature 17+. Appears only in advertising, marketing, and promotional materials related to a physical (e.g., boxed) video game that is expected to carry an ESRB rating, and should be replaced by a game's rating once it has been assigned.");
 
 INSERT INTO Users (id, displayName, email, password) VALUES
-(NULL, "mochi", "mochi@gmail.com", "5om3th!ng3nCryPt3d"),
-(NULL, "abril", "abril@gmail.com", "5om3th!ng3nCryPt3d"),
-(NULL, "gogi", "gogi@gmail.com", "5om3th!ng3nCryPt3d"),
-(NULL, "sombra", "sombra@gmail.com", "5om3th!ng3nCryPt3d"),
-(NULL, "kujimi", "kujimi@gmail.com", "5om3th!ng3nCryPt3d"),
-(NULL, "mananjus", "mananjus@gmail.com", "5om3th!ng3nCryPt3d");
+(NULL, "Mochi", "mochi@gmail.com", "5om3th!ng3nCryPt3d"),
+(NULL, "Abril", "abril@gmail.com", "5om3th!ng3nCryPt3d"),
+(NULL, "Gogi", "gogi@gmail.com", "5om3th!ng3nCryPt3d"),
+(NULL, "Sombra", "sombra@gmail.com", "5om3th!ng3nCryPt3d"),
+(NULL, "Kujimi", "kujimi@gmail.com", "5om3th!ng3nCryPt3d"),
+(NULL, "Mananjus", "mananjus@gmail.com", "5om3th!ng3nCryPt3d");
+
+INSERT INTO Roles (name) VALUES
+('user'),
+('admin');
 
 INSERT INTO Publishers (id, name) VALUES
 (NULL, "Annapurna Interactive"),
@@ -178,17 +202,28 @@ INSERT INTO Game_User_relations (userId, gameId) VALUES
 (4, 8),
 (5, 6);
 
+INSERT INTO User_Role_relations (userId, roleId) VALUES
+(1,1),
+(2,1),
+(3,1),
+(4,2),
+(5,1),
+(6,1);
+	
+
 # SELECT * FROM ESRB;
 # SELECT * FROM Users;
 # SELECT * FROM Publishers;
 # SELECT * FROM Games;
-# SELECT * FROM GamesWithInfo order by id;
 # SELECT * FROM Orders;
 # SELECT * FROM order_game_relations;
 # SELECT * FROM game_user_relations;
+# SELECT * FROM User_Role_relations;
+
+
+# SELECT * FROM user_with_role ORDER BY roleId desc;
 
 # get all free games
-# SELECT * FROM GamesWithInfo where price = 0;
 # SELECT title, price, publisherName as publisher, ESRB_ratingName as ESRB FROM Games where price = 0;
 
 # get all games that cost less than 30USD
@@ -198,9 +233,8 @@ INSERT INTO Game_User_relations (userId, gameId) VALUES
 # SELECT * FROM Games where price > 20 AND price < 60;
 
 # get all games from x user
+SELECT u.id as userId, u.displayName, g.id as gameId, g.title as gameTitle FROM game_user_relations as GUr INNER JOIN Games as g on g.id = GUr.gameId INNER JOIN Users as u on u.id = GUr.userId WHERE userId = 2;
 # SELECT g.title, g.publisher, g.ESRB_rating FROM game_user_relations as r INNER JOIN GamesWithInfo as g on g.id = r.gameid WHERE userid = 2;
 
-# INSERT new game
 
-
-show indexes from games;
+# show indexes from user_with_role;
