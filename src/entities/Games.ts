@@ -6,4 +6,5 @@ export type Games = {
   publisherName: string;
   ESRB_ratingId: number;
   ESRB_ratingName: string;
+  image: string;
 }
