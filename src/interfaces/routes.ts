@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { createGame, deleteGame, listGames, readGame, updateGame } from '../useCases';
+import { createGame, deleteGame, listGames, readGame, updateGame, highlightedGames } from '../useCases';
 import { createPublisher, deletePublisher, listPublishers, readPublisher, updatePublisher } from '../useCases';
 import { createESRB, deleteESRB, listESRB, readESRB, updateESRB } from '../useCases';
 
@@ -12,6 +12,8 @@ const appRouter = Router();
 appRouter.get('/games', listGames);
 // Create a new game
 appRouter.post('/games', createGame);
+// List highlighted
+appRouter.get('/games/highlighted', highlightedGames);
 // Delete a game
 appRouter.delete('/games/:gameId', deleteGame);
 // Get a single game by id
