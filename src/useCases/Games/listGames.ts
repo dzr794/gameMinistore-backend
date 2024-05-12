@@ -6,8 +6,7 @@ export const listGames = async ( req:Request, res:Response ) => {
   const conn = await db;
 
 
-  
-  const queryString =  `SELECT id, title, price, publisherName as publisher, ESRB_ratingName as ESRB 
+  const queryString =  `SELECT id, title, price, publisherName as publisher, ESRB_ratingName as ESRB, imgLink as image
                         FROM games;`;
   
   try {
