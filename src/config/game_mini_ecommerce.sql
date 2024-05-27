@@ -209,8 +209,8 @@ INSERT INTO Games (id, title, price, publisherId, publisherName, ESRB_ratingId, 
 (NULL, "What Remains of Edith Finch", 19.99 , 1, 'Annapurna Interactive', 3, 'Teen', 'https://dbxce1spal1df.cloudfront.net/018d937f-00e8-729d-a917-e2f1d5bcc95d/boxart.jpg'),
 (NULL, "Rocket League", 0 , 2, 'Psyonix', 2, 'Everyone 10+', 'https://dbxce1spal1df.cloudfront.net/018d937f-0a42-73de-a3a3-e7a08bc728b2/boxart.jpg'),
 (NULL, "Apex Legends", 0 , 4, 'Electronic Arts', 3, 'Teen', 'https://dbxce1spal1df.cloudfront.net/018d937f-0ddf-7119-9337-aa96d8a36d39/boxart.jpg'),
-(NULL, "Monster Hunter World", 29.99 , 1, 'Annapurna Interactive', 3, 'Teen', 'https://dbxce1spal1df.cloudfront.net/018d937e-fd94-7238-a99b-14457502670c/boxart.jpg'),
-(NULL, "Helldivers 2", 29.99 , 1, 'Annapurna Interactive', 4, 'Mature 17+', 'https://dbxce1spal1df.cloudfront.net/018d937f-6ee4-73f5-858c-2fde3407462f/boxart.jpg'),
+(NULL, "Monster Hunter World", 29.99 , 5, 'Capcom', 3, 'Teen', 'https://dbxce1spal1df.cloudfront.net/018d937e-fd94-7238-a99b-14457502670c/boxart.jpg'),
+(NULL, "Helldivers 2", 29.99 , 3, 'Sony Interactive Entertainment', 4, 'Mature 17+', 'https://dbxce1spal1df.cloudfront.net/018d937f-6ee4-73f5-858c-2fde3407462f/boxart.jpg'),
 (NULL, "Baldur's Gate 3", 59.99 , 7, 'Larian Studios', 4, 'Mature 17+', 'https://dbxce1spal1df.cloudfront.net/018d9584-24d6-7010-b82b-df1f0b154cc7/boxart.jpg'),
 (NULL, "Outer Wilds", 24.99 , 1, 'Annapurna Interactive', 2, 'Everyone 10+', 'https://dbxce1spal1df.cloudfront.net/018d937f-09dd-729b-88aa-5496f800b3bd/boxart.jpg'),
 (NULL, "Elden Ring", 59.99 , 6, 'Bandai Namco Entertainment', 3, 'Teen', 'https://dbxce1spal1df.cloudfront.net/018d937f-590c-728b-ac35-38bcff85f086/boxart.jpg');
@@ -283,7 +283,7 @@ SELECT * FROM HighlightedGamesDetails;
 
 
 # get all free games
-# SELECT title, price, publisherName as publisher, ESRB_ratingName as ESRB FROM Games where price = 0;
+# SELECT id, title, price, publisherName as publisher, ESRB_ratingName as ESRB, imgLink as image FROM games WHERE price = 0 ;
 
 # get all games that cost less than 30USD
 # SELECT title, price, publisherName as publisher, ESRB_ratingName FROM Games where price < 30;
